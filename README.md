@@ -5,9 +5,8 @@ Densities from the exponential family
 x=seq(1,40,length=40)
 plot( dnorm(x, mean=mean(x),sd=sd(x)  ), type="l")
 ```
-<div style="width: 60%; height: 60%">
-![dnorm((1..40), mean=20)](../../blob/main/images/normal_density.png)
-</div>
+<img src="../../blob/main/images/normal_density.png" width="200" height="400">
+
 ```
 plot( dpois(x, mean(x)), type="l")
 ```
