@@ -22,4 +22,4 @@ x=seq(-5,10,length=40)
 rate = mean(x)
 plot( dexp(x, rate), type="l" )
 ```
-<img src="../../blob/main/images/images/exponential_density_7.png" width="300" height="300">
+<img src="../../blob/main/images/exponential_density_7.png" width="300" height="300">
