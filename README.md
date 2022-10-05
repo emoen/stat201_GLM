@@ -10,16 +10,16 @@ plot( dnorm(x, mean=mean(x),sd=sd(x)  ), type="l")
 ```
 plot( dpois(x, mean(x)), type="l")
 ```
-![dpois((1..40), mean=20)](../../blob/main/images/poisson_density.png)
+<img src="../../blob/main/images/poisson_density.png" width="300" height="300">
 
 ```
 plot( dexp(x, mean(x)), type="l" )
 ```
-![dpois((1..40), mean=20)](../../blob/main/images/exponential_density_20.png)
+<img src="../../blob/main/images/exponential_density_20.png" width="300" height="300">
 
 ```
 x=seq(-5,10,length=40)
 rate = mean(x)
 plot( dexp(x, rate), type="l" )
 ```
-![dpois((-5..10), mean=7.5)](../../blob/main/images/exponential_density_7.png)
+<img src="../../blob/main/images/images/exponential_density_7.png" width="300" height="300">
