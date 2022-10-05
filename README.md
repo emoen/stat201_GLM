@@ -1,2 +1,25 @@
-# stat201_GLM
-Generaliser linear models - The code - it speaks for itself
+# stat201 Generalized Linear Models
+
+Densities from the exponential family
+```
+x=seq(1,40,length=40)
+plot( dnorm(x, mean=mean(x),sd=sd(x)  ), type="l")
+```
+![dnorm((1..40), mean=20)](../../images/normal_density.png)
+
+```
+plot( dpois(x, mean(x)), type="l")
+```
+![dpois((1..40), mean=20)](../../images/poisson_density.png)
+
+```
+plot( dexp(x, mean(x)), type="l" )
+```
+![dpois((1..40), mean=20)](../../images/exponential_density_20.png)
+
+```
+x=seq(-5,10,length=40)
+rate = mean(x)
+plot( dexp(x, rate), type="l" )
+```
+![dpois((-5..10), mean=7.5)](../../images/exponential_density_7.png)
