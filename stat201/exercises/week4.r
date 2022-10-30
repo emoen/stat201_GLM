@@ -78,3 +78,104 @@ a = unique(machine[1]) # 2 days
 b = unique(machine[2]) # worker =1,2,3,4
 c = unique(machine[3]) #not unique
 
+# J = 2  days, # K = 4 workers, JK = 8 groups
+# H_I there are no interactive effects, that is the effect of workers and days are additive
+# H_W there are no difference in quality associated with workers
+# H_D there are no difference in quality associated with days
+# Consider 1 saturated model, and 3 reduced models
+#
+# Saturated model E(Y_wdl) = b0 + b1_w + b2_d + b3_wd 
+# Additive model  E(Y_wdl) = b0 + b1_w + b2_d         #compare with saturated for H_i
+# No worker effect E(y_wdl) = b0       + b2_d         #compare with additive for H_W
+# No day effect    E(Y_wdl) = b0 + b1_w               # compare with additive for H_d
+#
+# calculate: 1) sse day 2) sse worker 3) sse within (error) 4) sse both factors
+# sse_total = sse day + sse worker + sse within + sse both factors
+# DF Satured: Additive: worker effect: day effect:
+
+total_avg = mean(machine[,3])
+
+#mean workers
+w1 = mean(machine[machine$worker==1,][,3])
+w2 = mean(machine[machine$worker==2,][,3])
+w3 = mean(machine[machine$worker==3,][,3])
+w4 = mean(machine[machine$worker==4,][,3])
+
+#mean days
+d1 = mean(machine[machine$day==1,][,3])
+d2 = mean(machine[machine$day==2,][,3])
+
+
+#1) sse day - factor 1. 2 rows => df = 2-1 = 1
+sse_day1 = sum( 20*(d1-total_avg)^2 )
+sse_day2 = sum( 20*(d2-total_avg)^2 )
+sse_1_factor = sse_day1+sse_day2
+
+######### 2. factor cmp to grand mean, 4 rows => df = 4 - 1 = 3
+sse_w1    = sum(5*(w1-total_avg)^2 )
+sse_w2    = sum(5*(w2-total_avg)^2 )
+sse_w3    = sum(5*(w3-total_avg)^2 )
+sse_w4    = sum(5*(w4-total_avg)^2 )
+sse_2_factor = sse_w1+sse_w2+sse_w3+sse_w4
+
+######## within error, rows = 4 => df= 4-1 = 3 * 4 * 2 = 24
+within_d1_w1 = sum((machine[machine$worker==1 & machine$day==1,][,3]-w1)^2)
+within_d1_w2 = sum((machine[machine$worker==2 & machine$day==1,][,3]-w2)^2)
+within_d1_w3 = sum((machine[machine$worker==3 & machine$day==1,][,3]-w3)^2)
+within_d1_w4 = sum((machine[machine$worker==4 & machine$day==1,][,3]-w4)^2)
+sse_within_d1 = within_d1_w1 + within_d1_w2 + within_d1_w3 + within_d1_w4
+  
+within_d2_w1 = sum((machine[machine$worker==1 & machine$day==2,][,3]-w1)^2)
+within_d2_w2 = sum((machine[machine$worker==2 & machine$day==2,][,3]-w2)^2)
+within_d2_w3 = sum((machine[machine$worker==3 & machine$day==2,][,3]-w3)^2)
+within_d2_w4 = sum((machine[machine$worker==4 & machine$day==2,][,3]-w4)^2)
+sse_within_d2 = within_d2_w1 + within_d2_w2 + within_d2_w3 + within_d2_w4
+sse_within= sse_within_d1 + sse_within_d2
+
+####### sse total, df = sum() = 1+3+24+3= 31
+sse_t = sum( (machine[,3]-total_avg)^2 )
+
+aggr_sse_t =sse_1_factor + sse_2_factor + sse_within
+
+####### sse both factors , df = df_1_factor * df_2_factor = 1*3 = 3
+sse_both = sse_t - aggr_sse_t
+
+
+########### mean square
+mse_1_factor = sse_1_factor/1
+mse_within = sse_within/24
+
+f_1 = sse_1_factor / mse_within # F(1,24)
+
+mse_2_factor = sse_2_factor/3
+f_2 = mse_2_factor / mse_within # F(3,24) # h_0 false
+
+mse_both_factors = sse_both/3
+f_3 = mse_both_factors / mse_within # F(3, 24) #h_0 false
+
+#find F critical value
+qf(p=.05, df1=3, df2=24, lower.tail=FALSE)
+
+
+##############################
+# 2-way anova in R with aov
+##############################
+twoway  = data.frame(machine)
+twoway$day <- factor(machine$day, levels = c(1, 2), labels = c("D1", "D2"))
+twoway$worker <- factor(machine$worker, levels = c(1, 2, 3, 4), labels = c("w1", "w2", "w3", "w4"))
+res.aov2 <- aov(twoway$weight ~ twoway$day + twoway$worker, data = twoway)
+summary(res.aov2)
+#                Df Sum Sq Mean Sq F value   Pr(>F)    
+#  twoway$day     1   6.08   6.084   4.934   0.0329 *  
+#  twoway$worker  3  54.62  18.207  14.767   2.24e-06 ***
+#  Residuals     35  43.15   1.233                     
+
+# Box plot with two factor variables
+boxplot(twoway$weight ~ twoway$day + twoway$worker, data = twoway, frame = FALSE, 
+        col = c("#00AFBB", "#E7B800"), ylab="Tooth Length")
+# Two-way interaction plot
+interaction.plot(x.factor = twoway$day , trace.factor = twoway$worker, 
+                 response = twoway$weight, fun = mean, 
+                 type = "b", legend = TRUE, 
+                 xlab = "Dose", ylab="Tooth Length",
+                 pch=c(1,19), col = c("#00AFBB", "#E7B800"))
