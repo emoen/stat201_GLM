@@ -7,13 +7,19 @@ The theory for linear normal models is looked at and applied to regression and a
 Learning Outcomes
 After completed course, the students are expected to be able to:
 
--Identify probability distributions belonging to an exponential family and adapt a description as a generalized linear model. <\br>
--Present the general theory of exponential families of distributions.<\br>
--Describe numerical procedures for estimation in generalized linear models.<\br>
--Recognize linear normal models and apply general test procedures to these models.<\br>
--Explain the proofs of important theorems in probability theory utilized in test procedures in linear normal models and in generalized linear models.<\br>
--Analyze data sets following Poisson or binomial distributions.<\br>
--Estimate parameters and test hypotheses in generalized linear models by means of statistical software.<\br>
+-Identify probability distributions belonging to an exponential family and adapt a description as a generalized linear model. 
+
+-Present the general theory of exponential families of distributions.
+
+-Describe numerical procedures for estimation in generalized linear models.
+
+-Recognize linear normal models and apply general test procedures to these models.
+
+-Explain the proofs of important theorems in probability theory utilized in test procedures in linear normal models and in generalized linear models.
+
+-Analyze data sets following Poisson or binomial distributions.
+
+-Estimate parameters and test hypotheses in generalized linear models by means of statistical software.
 
 ```
 x=seq(1,40,length=40)
